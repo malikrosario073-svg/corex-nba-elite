@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d18">
+<title>CoreX NBA Elite</title>
+<style>
+:root{color-scheme:dark;--bg:#080d18;--panel:#111a2b;--line:#25334a;--text:#f4f7ff;--muted:#91a1bb;--blue:#58a6ff;--green:#42d6a4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:24px 18px;background:linear-gradient(135deg,#142b4d,#101626);border-bottom:1px solid var(--line)}
+.brand{font-size:12px;color:var(--blue);font-weight:800;letter-spacing:2px}
+h1{font-size:29px;margin:9px 0 5px}
+p{color:var(--muted);line-height:1.5}
+main{max-width:1100px;margin:auto;padding:18px}
+.notice{background:#332916;border:1px solid #66502a;padding:12px;border-radius:10px;color:#ffdc94;font-size:13px;line-height:1.5}
+nav{display:flex;gap:8px;overflow:auto;margin:20px 0}
+nav button,.filters button{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:11px 14px;white-space:nowrap}
+nav button.active{background:#19345a;border-color:var(--blue)}
+h2{font-size:19px;margin:22px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;min-width:0}
+.label{color:var(--muted);font-size:12px}
+.value{font-size:25px;font-weight:750;margin-top:8px}
+.sub{font-size:12px;color:var(--green);margin-top:5px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+input,select{background:#0b1322;color:white;border:1px solid var(--line);border-radius:9px;padding:12px;font-size:14px;min-width:0}
+input{flex:1;width:100%}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:570px;background:var(--panel)}
+th,td{text-align:left;padding:13px 12px;border-bottom:1px solid var(--line);font-size:13px}
+th{color:var(--muted);font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+.player{font-weight:700}
+.tag{display:inline-block;border-radius:5px;background:#16382f;color:#79e6bf;padding:4px 6px;font-size:11px}
+.small{font-size:12px;color:var(--muted)}
+footer{padding:28px 18px;text-align:center;color:var(--muted);font-size:12px}
+.hidden{display:none}
+@media(min-width:700px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}header{padding:32px calc((100% - 1060px)/2)}main{padding:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">COREX SPORTS INTELLIGENCE</div>
+  <h1>🏀 CoreX NBA Elite</h1>
+  <p style="margin-bottom:0">NBA analytics · Player performance · Projection lab</p>
+</header>
+<main>
+  <div class="notice"><strong>DEMO MODE</strong> — This interface currently uses illustrative sample numbers. They are not live NBA statistics, verified projections, betting recommendations, or measured model results.</div>
+  <nav>
+    <button class="active" data-tab="dashboard">Dashboard</button>
+    <button data-tab="players">Player Lab</button>
+    <button data-tab="projections">Projections</button>
+    <button data-tab="evaluation">Model Evaluation</button>
+  </nav>
+  <section id="dashboard">
+    <h2>Analytics Overview</h2>
+    <div class="grid">
+      <div class="card"><div class="label">League</div><div class="value">NBA</div><div class="sub">Basketball analytics</div></div>
+      <div class="card"><div class="label">Player Profiles</div><div class="value">Demo</div><div class="sub">Sample dataset only</div></div>
+      <div class="card"><div class="label">Projection Model</div><div class="value">v0.1</div><div class="sub">Baseline interface</div></div>
+      <div class="card"><div class="label">Live Data</div><div class="value">Offline</div><div class="sub">API not connected</div></div>
+    </div>
+    <h2>Explore CoreX</h2>
+    <div class="grid">
+      <div class="card"><h3>📊 Player Lab</h3><p>Search demo player profiles and compare scoring, rebounding and assists.</p><button onclick="showTab('players')">Explore players →</button></div>
+      <div class="card"><h3>🎯 Projections</h3><p>Review illustrative estimates across several statistical categories.</p><button onclick="showTab('projections')">Open projections →</button></div>
+      <div class="card"><h3>🧪 Model Evaluation</h3><p>See which evaluation metrics need real historical data.</p><button onclick="showTab('evaluation')">View evaluation →</button></div>
+      <div class="card"><h3>🔄 Next milestone</h3><p>Connect a reliable NBA statistics feed before generating real projections.</p></div>
+    </div>
+  </section>
+  <section id="players" class="hidden">
+    <h2>Player Lab</h2>
+    <p>Search the illustrative player list. All statistics below are sample values.</p>
+    <div class="filters"><input id="search" placeholder="Search player or team..." aria-label="Search player or team"><select id="sort" aria-label="Sort players"><option value="points">Sort: Points</option><option value="rebounds">Sort: Rebounds</option><option value="assists">Sort: Assists</option></select></div>
+    <div class="tablewrap"><table><thead><tr><th>Player</th><th>Team</th><th>PTS</th><th>REB</th><th>AST</th><th>PRA</th></tr></thead><tbody id="playersBody"></tbody></table></div>
+  </section>
+  <section id="projections" class="hidden">
+    <h2>Projection Lab</h2>
+    <p>Illustrative values only. This is not a trained or validated prediction model.</p>
+    <div class="filters"><select id="metric" aria-label="Projection metric"><option value="pts">Points (PTS)</option><option value="reb">Rebounds (REB)</option><option value="ast">Assists (AST)</option><option value="pra">Points + Rebounds + Assists (PRA)</option><option value="threes">Three-pointers made (3PM)</option><option value="stl">Steals (STL)</option><option value="blk">Blocks (BLK)</option></select></div>
+    <div class="tablewrap"><table><thead><tr><th>Player</th><th>Category</th><th>Sample Estimate</th><th>Data Status</th></tr></thead><tbody id="projectionBody"></tbody></table></div>
+  </section>
+  <section id="evaluation" class="hidden">
+    <h2>Model Evaluation Center</h2>
+    <div class="notice">No accuracy claims are available yet. Evaluation requires historical predictions, actual game results, and out-of-sample testing.</div>
+    <div class="grid" style="margin-top:14px">
+      <div class="card"><div class="label">Mean Absolute Error (MAE)</div><div class="value">N/A</div><p>No verified test data</p></div>
+      <div class="card"><div class="label">Root Mean Squared Error</div><div class="value">N/A</div><p>No verified test data</p></div>
+      <div class="card"><div class="label">Predictions Evaluated</div><div class="value">0</div><p>No historical predictions loaded</p></div>
+      <div class="card"><div class="label">Validation Status</div><div class="value">Pending</div><p>Dataset and model needed</p></div>
+    </div>
+    <h2>Model Development Roadmap</h2>
+    <div class="card"><p>01 · Import verified player game logs</p><p>02 · Build rolling 5, 10 and 20-game features</p><p>03 · Account for minutes, home/away splits and opponent context</p><p>04 · Train and test on chronological game splits</p><p>05 · Track MAE, RMSE and prediction calibration</p><p>06 · Record every forecast before games begin, then compare with actual results</p></div>
+  </section>
+</main>
+<footer>COREX NBA ELITE · Prototype v0.1 · Sample data only</footer>
+<script>
+const samplePlayers=[
+{name:"Sample Guard A",team:"TEAM A",points:28.4,rebounds:5.2,assists:7.1,threes:3.1,stl:1.2,blk:0.4},
+{name:"Sample Forward B",team:"TEAM B",points:25.1,rebounds:8.6,assists:5.4,threes:2.0,stl:1.0,blk:0.8},
+{name:"Sample Center C",team:"TEAM C",points:19.8,rebounds:11.2,assists:3.2,threes:0.5,stl:0.7,blk:2.1},
+{name:"Sample Guard D",team:"TEAM D",points:22.6,rebounds:4.1,assists:8.8,threes:2.7,stl:1.5,blk:0.3},
+{name:"Sample Forward E",team:"TEAM E",points:17.3,rebounds:7.5,assists:2.9,threes:1.8,stl:0.8,blk:1.1}
+];
+samplePlayers.forEach(p=>p.pra=p.points+p.rebounds+p.assists);
+function showTab(tab){
+document.querySelectorAll("main>section").forEach(s=>s.classList.toggle("hidden",s.id!==tab));
+document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+function renderPlayers(){
+const q=document.getElementById("search").value.toLowerCase();
+const sort=document.getElementById("sort").value;
+const rows=samplePlayers.filter(p=>(p.name+" "+p.team).toLowerCase().includes(q)).sort((a,b)=>b[sort]-a[sort]);
+document.getElementById("playersBody").innerHTML=rows.map(p=>`<tr><td class="player">${p.name}</td><td>${p.team}</td><td>${p.points.toFixed(1)}</td><td>${p.rebounds.toFixed(1)}</td><td>${p.assists.toFixed(1)}</td><td>${p.pra.toFixed(1)}</td></tr>`).join("")||'<tr><td colspan="6">No sample players match your search.</td></tr>';
+}
+function renderProjections(){
+const metric=document.getElementById("metric").value;
+const labels={pts:"Points",reb:"Rebounds",ast:"Assists",pra:"PRA",threes:"3PM",stl:"Steals",blk:"Blocks"};
+document.getElementById("projectionBody").innerHTML=samplePlayers.slice().sort((a,b)=>b[metric]-a[metric]).map(p=>`<tr><td class="player">${p.name}</td><td>${labels[metric]}</td><td>${p[metric].toFixed(1)}</td><td><span class="tag">Illustrative</span></td></tr>`).join("");
+}
+document.getElementById("search").addEventListener("input",renderPlayers);
+document.getElementById("sort").addEventListener("change",renderPlayers);
+document.getElementById("metric").addEventListener("change",renderProjections);
+renderPlayers();renderProjections();
+</script>
+</body>
+</html>
